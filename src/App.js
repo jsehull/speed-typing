@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const App = () => {
   const [text, setText] = useState('')
   // const [time, setTime] = useState(60)
-  // const [wordCount, setWordCount] = useState(0)
+  const [wordCount, setWordCount] = useState(0)
 
   const handleChange = e => {
     const {value} = e.target
@@ -13,7 +13,6 @@ const App = () => {
     //   timer
     // })
   }
-  console.log(text)
 
   // const countdownTimer = time => (
   //   setInterval(() => {
@@ -21,16 +20,21 @@ const App = () => {
   //   }, 1000)
   // )
 
+  const getWordCount = text => {
+    text === '' || null
+      ? setWordCount(0)
+      : setWordCount(text.match(/(\w+)/g).length)
+  }
+
   return (
     <>
       <h1>How fast do you type?</h1>
       <textarea
-        value={text}
-        onChange={handleChange} />
-      {/* <h4>Time Remaining: {countdownTimer(time)}</h4> */}
-      <h4>Time Remaining: {handleChange}</h4>
-      <button>Start</button>
-      <h1>Word Count: 0</h1>
+        onChange={handleChange}
+        value={text} />
+      {/* <h4>Time Remaining: {time}</h4> */}
+      <button onClick={() => getWordCount(text)}>Start</button>
+      <h1>Word Count: {wordCount}</h1>
     </>
   )
 }
