@@ -1,29 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const App = () => {
   const [text, setText] = useState('')
-  // const [time, setTime] = useState(60)
+  const [timer, setTimer] = useState(2)
+  const [isTimerOn, setIsTimerOn] = useState(false)
   const [wordCount, setWordCount] = useState(0)
 
   const handleChange = e => {
     const {value} = e.target
 
     setText(value)
-    // setTime(() => {
-    //   timer
-    // })
   }
 
-  // const countdownTimer = time => (
-  //   setInterval(() => {
-  //     // setTime(time--)
-  //   }, 1000)
-  // )
+  const startProgram = () => {
+    setText('')
+    setIsTimerOn(true)
+  }
+
+  useEffect(() => {
+    if (timer > 0 && isTimerOn === true) {
+      const timeout = setTimeout(() => {
+        setTimer(time => time - 1)
+      }, 1000)
+
+      return () => clearTimeout(timeout)
+    } else if(timer === 0 ) {
+      setIsTimerOn(false)
+      getWordCount(text)
+    }
+  }, [isTimerOn, timer])
 
   const getWordCount = text => {
-    text === '' || null
-      ? setWordCount(0)
-      : setWordCount(text.match(/(\w+)/g).length)
+    text === '' || null ? setWordCount(0) : setWordCount(text.match(/(\w+)/g).length)
   }
 
   return (
@@ -32,8 +40,8 @@ const App = () => {
       <textarea
         onChange={handleChange}
         value={text} />
-      {/* <h4>Time Remaining: {time}</h4> */}
-      <button onClick={() => getWordCount(text)}>Start</button>
+      <h4>Time remaining: {timer}</h4>
+      <button onClick={startProgram}>Start</button>
       <h1>Word Count: {wordCount}</h1>
     </>
   )
