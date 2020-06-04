@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 const App = () => {
-  const STARTING_TIME = 5
+  const STARTING_TIME = 60
 
   const [text, setText] = useState('')
   const [timer, setTimer] = useState(STARTING_TIME)
   const [isTimerOn, setIsTimerOn] = useState(false)
   const [wordCount, setWordCount] = useState(0)
+  const textareaRef = useRef(null)
 
   const handleChange = e => {
     const {value} = e.target
@@ -18,6 +19,8 @@ const App = () => {
     setText('')
     setTimer(STARTING_TIME)
     setIsTimerOn(true)
+    textareaRef.current.disabled = false
+    textareaRef.current.focus()
   }
 
   const endProgram = () => {
@@ -47,6 +50,7 @@ const App = () => {
       <textarea
         onChange={handleChange}
         value={text}
+        ref={textareaRef}
         disabled={!isTimerOn} />
       <h4>Time remaining: {timer}/{STARTING_TIME}</h4>
       <button
