@@ -24,6 +24,10 @@ textarea {
     font-family: 'Press Start 2P', cursive;
 }
 
+textarea:disabled {
+    background: gray;
+}
+
 button {
     margin: 0 auto;
     padding: 10px 20px;
@@ -33,4 +37,8 @@ button {
     border: none;
     font-family: 'Press Start 2P', cursive;
     text-transform: uppercase;
+}
+
+button:disabled {
+    background: gray;
 }

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 const App = () => {
+  const STARTING_TIME = 5
+
   const [text, setText] = useState('')
-  const [timer, setTimer] = useState(2)
+  const [timer, setTimer] = useState(STARTING_TIME)
   const [isTimerOn, setIsTimerOn] = useState(false)
   const [wordCount, setWordCount] = useState(0)
 
@@ -14,7 +16,17 @@ const App = () => {
 
   const startProgram = () => {
     setText('')
+    setTimer(STARTING_TIME)
     setIsTimerOn(true)
+  }
+
+  const endProgram = () => {
+    setIsTimerOn(false)
+    getWordCount(text)
+  }
+
+  const getWordCount = text => {
+    text === '' || null ? setWordCount(0) : setWordCount(text.match(/(\w+)/g).length)
   }
 
   useEffect(() => {
@@ -24,24 +36,25 @@ const App = () => {
       }, 1000)
 
       return () => clearTimeout(timeout)
-    } else if(timer === 0 ) {
-      setIsTimerOn(false)
-      getWordCount(text)
+    } else if(timer <= 0) {
+      endProgram()
     }
   }, [isTimerOn, timer])
-
-  const getWordCount = text => {
-    text === '' || null ? setWordCount(0) : setWordCount(text.match(/(\w+)/g).length)
-  }
 
   return (
     <>
       <h1>How fast do you type?</h1>
       <textarea
         onChange={handleChange}
-        value={text} />
-      <h4>Time remaining: {timer}</h4>
-      <button onClick={startProgram}>Start</button>
+        value={text}
+        disabled={!isTimerOn} />
+      <h4>Time remaining: {timer}/{STARTING_TIME}</h4>
+      <button
+        onClick={startProgram}
+        disabled={isTimerOn}
+      >
+        Start
+      </button>
       <h1>Word Count: {wordCount}</h1>
     </>
   )
