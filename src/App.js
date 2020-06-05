@@ -1,48 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
+import useProgram from './hooks/useProgram'
 
 const App = () => {
-  const STARTING_TIME = 60
-
-  const [text, setText] = useState('')
-  const [timer, setTimer] = useState(STARTING_TIME)
-  const [isTimerOn, setIsTimerOn] = useState(false)
-  const [wordCount, setWordCount] = useState(0)
-  const textareaRef = useRef(null)
-
-  const handleChange = e => {
-    const {value} = e.target
-
-    setText(value)
-  }
-
-  const startProgram = () => {
-    setText('')
-    setTimer(STARTING_TIME)
-    setIsTimerOn(true)
-    textareaRef.current.disabled = false
-    textareaRef.current.focus()
-  }
-
-  const endProgram = () => {
-    setIsTimerOn(false)
-    getWordCount(text)
-  }
-
-  const getWordCount = text => {
-    text === '' || null ? setWordCount(0) : setWordCount(text.match(/(\w+)/g).length)
-  }
-
-  useEffect(() => {
-    if (timer > 0 && isTimerOn === true) {
-      const timeout = setTimeout(() => {
-        setTimer(time => time - 1)
-      }, 1000)
-
-      return () => clearTimeout(timeout)
-    } else if(timer <= 0) {
-      endProgram()
-    }
-  }, [isTimerOn, timer])
+  const {
+    handleChange,
+    text,
+    textareaRef,
+    isTimerOn,
+    timer,
+    startingTime,
+    startProgram,
+    wordCount
+  } = useProgram(5)
 
   return (
     <>
@@ -52,7 +21,7 @@ const App = () => {
         value={text}
         ref={textareaRef}
         disabled={!isTimerOn} />
-      <h4>Time remaining: {timer}/{STARTING_TIME}</h4>
+      <h4>Time remaining: {timer}/{startingTime}</h4>
       <button
         onClick={startProgram}
         disabled={isTimerOn}
