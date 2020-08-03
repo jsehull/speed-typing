@@ -1,3 +1,5 @@
+# speed-typing
+
 <img src="src/github-preview.png" alt="mobile screenshot">
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
